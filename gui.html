@@ -1,0 +1,105 @@
+<!--
+##GroupID-5(13114047)-Rohit Kumar
+##Date:16 jan 2017
+##gui for simple polygon
+-->
+<!DOCTYPE html>
+<html>
+<body>
+<input id="someInput" type="number">
+<input type="button" value="make simple polygon" onClick="make_poly()">
+<button onclick="location.reload()">refresh</button>
+<h2>simple polygon<h2>
+<canvas  width = "400" height = "400" id = "c1">
+	
+</canvas>
+<script>
+function drawCircle(x, y,rad,color ){	
+	var canvas = document.querySelector("canvas");
+	var context = canvas.getContext("2d");
+	context.beginPath();
+	context.fillStyle = color;
+	context.arc(x,y,rad,0,2*Math.PI);
+	context.fill();
+}
+function drawLine(xa,ya,xb,yb){
+	var canvas = document.querySelector("canvas");
+	var context = canvas.getContext("2d");
+	context.beginPath();
+	context.moveTo(xa,ya);
+	context.lineTo(xb,yb);
+	
+	context.closePath();
+	context.stroke();
+}
+ 
+  function angle(cx, cy, ex, ey) {  
+        var dy = ey - cy;
+        var dx = ex - cx;
+        var theta = Math.atan2(dy, dx); 
+        theta *= 180 / Math.PI; 
+        if (theta < 0) theta = 360 + theta; 
+        return theta;
+    }
+ 
+ function make_poly()
+ {
+	
+     var nameElement = document.getElementById("someInput");
+     var theName1 = nameElement.value;
+	 var n=parseInt(theName1);
+array = [];
+array1=[];
+var xi,yi;
+function vertex(x,y)
+{
+    this.x=x;
+	this.y=y;
+}
+//drawCircle(25,375,2,"red");
+min=1000;
+for(i=0;i<n;i++){
+	xi =Math.floor((Math.random()*300)+50);
+	yi =Math.floor((Math.random()*300)+50);
+	
+	if(min>xi) 
+	{
+		min=xi;
+	}
+	array.push({ x: xi, y: yi });
+	drawCircle(xi,yi,2,"red");
+	}
+
+for( i=0;i<n;i++)
+		{
+			if(min==array[i].x)
+			{
+			 temp=new vertex(array[i].x,array[i].y);
+              array[i].x=array[0].x;
+              array[i].y=array[0].y;
+              array[0].x=temp.x;
+              array[0].y=temp.y;
+			}
+		}
+
+for(i=1;i<n;i++){
+	
+	array1.push({ x: array[i].x, y: array[i].y , angle: angle(array[i].x,array[i].y,array[0].x,array[0].y)});
+
+	}
+
+
+	array1.sort(function(a, b) {   
+            return parseFloat(a.angle) - parseFloat(b.angle);
+        });
+		ip = new vertex(array[0].x,array[0].y);
+		drawLine(ip.x,ip.y,array1[0].x,array1[0].y,"black");
+	for(j =1;j<n-1;j++){
+		drawLine(array1[j-1].x,array1[j-1].y,array1[j].x,array1[j].y,"black");
+		}
+		drawLine(array1[n-2].x,array1[n-2].y,ip.x,ip.y,"black");
+
+}
+</script>
+</body>
+</html>
